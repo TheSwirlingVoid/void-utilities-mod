@@ -6,10 +6,10 @@ import net.minecraftforge.fml.DistExecutor;
 
 public class ServerProxy implements IProxy {
 	
-	/*@Override
+	@Override
 	public World getClientWorld() {
 		// TODO Auto-generated method stub
 		throw new IllegalStateException("This is a client-only mod.");
-	}*/
+	}
 	
 }
