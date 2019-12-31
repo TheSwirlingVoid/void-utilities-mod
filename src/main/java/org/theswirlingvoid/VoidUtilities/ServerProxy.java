@@ -5,8 +5,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.DistExecutor;
 
 public class ServerProxy implements IProxy {
-
-	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	
 	@Override
 	public World getClientWorld() {
