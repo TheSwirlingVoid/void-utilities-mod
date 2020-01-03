@@ -1,6 +1,4 @@
-package org.theswirlingvoid.VoidUtilities.slots;
-
-import org.theswirlingvoid.VoidUtilities.tileentities.AbstractFurnacentContainer;
+package org.theswirlingvoid.VoidUtilities.tileentities;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;

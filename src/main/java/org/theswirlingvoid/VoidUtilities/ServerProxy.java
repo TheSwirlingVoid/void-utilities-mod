@@ -9,5 +9,8 @@ public class ServerProxy implements IProxy {
 		// TODO Auto-generated method stub
 		throw new IllegalStateException("This is a client-only mod.");
 	}
+	public void init() {
+		
+	}
 	
 }

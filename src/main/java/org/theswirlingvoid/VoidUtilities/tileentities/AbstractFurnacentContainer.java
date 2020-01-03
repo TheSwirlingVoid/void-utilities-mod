@@ -12,6 +12,7 @@ import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.inventory.container.RecipeBookContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
@@ -119,6 +120,7 @@ public abstract class AbstractFurnacentContainer extends RecipeBookContainer<IIn
 
             slot.onSlotChange(itemstack1, itemstack);
          } else if (index != 1 && index != 0) {
+        	 
             if (this.func_217057_a(itemstack1)) {
                if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                   return ItemStack.EMPTY;
@@ -155,11 +157,20 @@ public abstract class AbstractFurnacentContainer extends RecipeBookContainer<IIn
    }
 
    protected boolean func_217057_a(ItemStack p_217057_1_) {
-      return this.world.getRecipeManager().getRecipe((IRecipeType)this.recipeType, new Inventory(p_217057_1_), this.world).isPresent();
+	   IRecipe irecipe=null;
+  	 for (IRecipe rec:this.world.getRecipeManager().getRecipes()) {
+  		 if (rec instanceof AbstractCookingRecipe){
+if (rec.getRecipeOutput().isItemEqual(p_217057_1_)) {
+irecipe=rec;
+break;
+}
+  		 }
+  	 }
+      return irecipe!=null;
    }
 
    public boolean isFuel(ItemStack p_217058_1_) {
-      return AbstractFurnaceTileEntity.isFuel(p_217058_1_);
+      return AbstractFurnacentTileEntity.isFuel(p_217058_1_);
    }
 
    @OnlyIn(Dist.CLIENT)

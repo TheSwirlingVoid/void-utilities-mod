@@ -218,7 +218,16 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
       if (!this.world.isRemote) {
          ItemStack itemstack = this.items.get(1);
          if (this.isBurning() || !itemstack.isEmpty() && !this.items.get(0).isEmpty()) {
-            IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).orElse(null);
+        	 IRecipe irecipe=null;
+        	 for (IRecipe rec:this.world.getRecipeManager().getRecipes()) {
+        		 if (rec instanceof AbstractCookingRecipe){
+ if (rec.getRecipeOutput().isItemEqual(this.items.get(0))) {
+ irecipe=rec;
+ break;
+ }
+        		 }
+        	 }
+           
             if (!this.isBurning() && this.canSmelt(irecipe)) {
                this.burnTime = this.getBurnTime(itemstack);
                this.recipesUsed = this.burnTime;
@@ -263,10 +272,21 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
       }
 
    }
-
+public ItemStack getei(ItemStack[] itemstackbr){
+	for (ItemStack is:itemstackbr) {
+   	 return is;
+    }
+	return ItemStack.EMPTY;
+}
    protected boolean canSmelt(@Nullable IRecipe<?> recipeIn) {
+	   if (recipeIn.getRecipeOutput().getItem() == Items.IRON_NUGGET||recipeIn.getRecipeOutput().getItem() == Items.GOLD_NUGGET) {
+		   return false;
+	   }
       if (!this.items.get(0).isEmpty() && recipeIn != null) {
-         ItemStack itemstack = recipeIn.getRecipeOutput();
+         ItemStack[] itemstackbr = recipeIn.getIngredients().get(0).getMatchingStacks();
+         ItemStack itemstack=getei(itemstackbr);
+         
+         
          if (itemstack.isEmpty()) {
             return false;
          } else {
@@ -289,7 +309,8 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
    private void func_214007_c(@Nullable IRecipe<?> p_214007_1_) {
       if (p_214007_1_ != null && this.canSmelt(p_214007_1_)) {
          ItemStack itemstack = this.items.get(0);
-         ItemStack itemstack1 = p_214007_1_.getRecipeOutput();
+         ItemStack[] itemstackbr = p_214007_1_.getIngredients().get(0).getMatchingStacks();
+         ItemStack itemstack1=getei(itemstackbr);
          ItemStack itemstack2 = this.items.get(2);
          if (itemstack2.isEmpty()) {
             this.items.set(2, itemstack1.copy());
@@ -301,8 +322,8 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
             this.setRecipeUsed(p_214007_1_);
          }
 
-         if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.items.get(1).isEmpty() && this.items.get(1).getItem() == Items.BUCKET) {
-            this.items.set(1, new ItemStack(Items.WATER_BUCKET));
+         if (itemstack.getItem() == Blocks.SPONGE.asItem() && !this.items.get(1).isEmpty() && this.items.get(1).getItem() == Items.WATER_BUCKET) {
+            this.items.set(1, new ItemStack(Items.BUCKET));
          }
 
          itemstack.shrink(1);

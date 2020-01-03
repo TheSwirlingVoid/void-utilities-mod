@@ -3,6 +3,7 @@ package org.theswirlingvoid.VoidUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.theswirlingvoid.VoidUtilities.blocks.FurnacentBlock;
+import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentContainer;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentTileEntity;
 
 import com.mojang.datafixers.DataFixUtils;
@@ -10,12 +11,15 @@ import com.mojang.datafixers.types.Type;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -40,15 +44,15 @@ public class Main
 	}
 	private void setup(final FMLCommonSetupEvent event)
 	{
-		
+		proxy.init();
 	}
 	@ObjectHolder(Main.MODID)
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 	public static class RegistryEvents
 	{
 		public static final FurnacentBlock furnacent = (FurnacentBlock)new FurnacentBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightValue(13)).setRegistryName(Main.MODID,"furnacent");
-		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacent_te", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent));
-		
+		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent));
+		public static final ContainerType<FurnacentContainer> furnacentCont = Null();
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
 		{
@@ -61,6 +65,13 @@ public class Main
 		{
 			tileEntityRegistryEvent.getRegistry().registerAll(
 					furnacentTE
+			);
+		}
+		@SubscribeEvent
+		public static void registerContainerTypes(final RegistryEvent.Register<ContainerType<?>> event) {
+			System.out.println("registcontainer");
+			event.getRegistry().registerAll(
+					new ContainerType<>(FurnacentContainer::new).setRegistryName("furnacentcont")
 			);
 		}
 		private static <T extends TileEntity> TileEntityType<T> TEbuild(final String name, final TileEntityType.Builder<T> builder) {
@@ -87,7 +98,8 @@ public class Main
 
 			return tileEntityType;
 		}
-	}
-	}
+	
+		
+}
 
-
+}

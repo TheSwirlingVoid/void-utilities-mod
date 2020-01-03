@@ -78,8 +78,8 @@ public abstract class AbstractFurnacentBlock extends ContainerBlock {
    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
       if (state.getBlock() != newState.getBlock()) {
          TileEntity tileentity = worldIn.getTileEntity(pos);
-         if (tileentity instanceof AbstractFurnaceTileEntity) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (AbstractFurnaceTileEntity)tileentity);
+         if (tileentity instanceof AbstractFurnacentTileEntity) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (AbstractFurnacentTileEntity)tileentity);
             worldIn.updateComparatorOutputLevel(pos, this);
          }
 
