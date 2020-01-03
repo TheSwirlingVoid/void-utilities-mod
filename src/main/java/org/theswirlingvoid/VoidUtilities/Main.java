@@ -47,7 +47,7 @@ public class Main
 	public static class RegistryEvents
 	{
 		public static final FurnacentBlock furnacent = (FurnacentBlock)new FurnacentBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightValue(13)).setRegistryName(Main.MODID,"furnacent");
-		public static final TileEntityType<FurnacentTileEntity> furnacentTE = Null();
+		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacent_te", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent));
 		
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
@@ -60,7 +60,7 @@ public class Main
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
 		{
 			tileEntityRegistryEvent.getRegistry().registerAll(
-					TEbuild("furnacent_te", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent))
+					furnacentTE
 			);
 		}
 		private static <T extends TileEntity> TileEntityType<T> TEbuild(final String name, final TileEntityType.Builder<T> builder) {
@@ -70,7 +70,7 @@ public class Main
 
 			try {
 				dataFixerType = DataFixesManager.getDataFixer()
-						.getSchema(DataFixUtils.makeKey(ModDataFixers.DATA_VERSION))
+						.getSchema(DataFixUtils.makeKey(103))
 						.getChoiceType(TypeReferences.BLOCK_ENTITY, registryName.toString());
 			} catch (final IllegalArgumentException e) {
 				if (SharedConstants.developmentMode) {
