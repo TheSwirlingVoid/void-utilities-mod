@@ -18,7 +18,6 @@ import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -32,7 +31,6 @@ public class Main
 		return null;
 	}
 	public static final String MODID="voidutilities";
-	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	private static final Logger LOGGER = LogManager.getLogger();
 	public Main()
 	{
@@ -70,7 +68,7 @@ public class Main
 
 			try {
 				dataFixerType = DataFixesManager.getDataFixer()
-						.getSchema(DataFixUtils.makeKey(ModDataFixers.DATA_VERSION))
+						.getSchema(DataFixUtils.makeKey(103))
 						.getChoiceType(TypeReferences.BLOCK_ENTITY, registryName.toString());
 			} catch (final IllegalArgumentException e) {
 				if (SharedConstants.developmentMode) {
