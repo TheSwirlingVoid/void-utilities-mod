@@ -54,11 +54,11 @@ public class Main
 		public static final FurnacentBlock furnacent = (FurnacentBlock)new FurnacentBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightValue(13)).setRegistryName(Main.MODID,"furnacent");
 		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent));
 		public static final ContainerType<FurnacentContainer> furnacentCont = Null();
-
+		public static final NtoreBlock ntore = (NtoreBlock) new NtoreBlock().setRegistryName(Main.MODID, "ntore");
 		public static final BlockItem ntoreitem=(BlockItem) new BlockItem(ModBlocks.NTOREBLOCK, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(Main.MODID,"ntore");
 		public static final Item ingotnt=new Item(new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.MATERIALS)).setRegistryName(Main.MODID,"ingotnt");
 		public static final BlockItem furnacentitem=(BlockItem)new BlockItem(furnacent, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.SEARCH).group(ItemGroup.DECORATIONS)).setRegistryName(Main.MODID,"furnacent");
-		public static final NtoreBlock ntore = (NtoreBlock) new NtoreBlock().setRegistryName(Main.MODID, "ntore");
+		
 		
 
 		@SubscribeEvent
