@@ -2,8 +2,8 @@ package org.theswirlingvoid.VoidUtilities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.theswirlingvoid.VoidUtilities.blocks.FurnacentBlock;
-import org.theswirlingvoid.VoidUtilities.blocks.NtoreBlock;
+import org.theswirlingvoid.VoidUtilities.blocks.ModBlocks;
+import org.theswirlingvoid.VoidUtilities.items.ModItems;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentContainer;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentTileEntity;
 
@@ -11,11 +11,8 @@ import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.types.Type;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -51,31 +48,24 @@ public class Main
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 	public static class RegistryEvents
 	{
-		public static final FurnacentBlock furnacent = (FurnacentBlock)new FurnacentBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightValue(13)).setRegistryName(Main.MODID,"furnacent");
-		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent));
+		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, ModBlocks.furnacent));
 		public static final ContainerType<FurnacentContainer> furnacentCont = Null();
-		public static final NtoreBlock ntore = (NtoreBlock) new NtoreBlock().setRegistryName(Main.MODID, "ntore");
-		public static final BlockItem ntoreitem=(BlockItem) new BlockItem(ModBlocks.NTOREBLOCK, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(Main.MODID,"ntore");
-		public static final Item ingotnt=new Item(new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.MATERIALS)).setRegistryName(Main.MODID,"ingotnt");
-		public static final BlockItem furnacentitem=(BlockItem)new BlockItem(furnacent, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.SEARCH).group(ItemGroup.DECORATIONS)).setRegistryName(Main.MODID,"furnacent");
 		
-		
-
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
 		{
 			blockRegistryEvent.getRegistry().registerAll(
-				furnacent,
-				ntore
+				ModBlocks.furnacent,
+				ModBlocks.ntore
 			);
 		}
 		@SubscribeEvent
 		public static void onItemsRegistry(final RegistryEvent.Register<Item> itemRegistryEvent)
 		{
 			itemRegistryEvent.getRegistry().registerAll(
-					ntoreitem,
-					furnacentitem,
-					ingotnt);
+					ModItems.ntoreitem,
+					ModItems.furnacentitem,
+					ModItems.ingotnt);
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
