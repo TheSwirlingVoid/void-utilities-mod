@@ -283,6 +283,7 @@ public ItemStack getei(ItemStack[] itemstackbr){
 		   return false;
 	   }
       if (!this.items.get(0).isEmpty() && recipeIn != null) {
+    	  if (recipeIn.getRecipeOutput().getCount()<=this.items.get(0).getCount()) {
          ItemStack[] itemstackbr = recipeIn.getIngredients().get(0).getMatchingStacks();
          ItemStack itemstack=getei(itemstackbr);
          
@@ -301,6 +302,9 @@ public ItemStack getei(ItemStack[] itemstackbr){
                return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
             }
          }
+    	  } else {
+    		  return false;
+    	  }
       } else {
          return false;
       }
@@ -315,18 +319,14 @@ public ItemStack getei(ItemStack[] itemstackbr){
          if (itemstack2.isEmpty()) {
             this.items.set(2, itemstack1.copy());
          } else if (itemstack2.getItem() == itemstack1.getItem()) {
-            itemstack2.grow(itemstack1.getCount());
-         }
-
-         if (!this.world.isRemote) {
-            this.setRecipeUsed(p_214007_1_);
+            itemstack2.grow(1);
          }
 
          if (itemstack.getItem() == Blocks.SPONGE.asItem() && !this.items.get(1).isEmpty() && this.items.get(1).getItem() == Items.WATER_BUCKET) {
             this.items.set(1, new ItemStack(Items.BUCKET));
          }
 
-         itemstack.shrink(1);
+         itemstack.shrink(itemstack1.getCount());
       }
    }
 
