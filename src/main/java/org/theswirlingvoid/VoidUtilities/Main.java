@@ -3,6 +3,7 @@ package org.theswirlingvoid.VoidUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.theswirlingvoid.VoidUtilities.blocks.FurnacentBlock;
+import org.theswirlingvoid.VoidUtilities.blocks.NtoreBlock;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentContainer;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentTileEntity;
 
@@ -12,14 +13,14 @@ import com.mojang.datafixers.types.Type;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,7 +43,7 @@ public class Main
 	}
 	private void setup(final FMLCommonSetupEvent event)
 	{
-		proxy.init();
+		ClientProxy.init();
 	}
 	@ObjectHolder(Main.MODID)
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
@@ -51,12 +52,23 @@ public class Main
 		public static final FurnacentBlock furnacent = (FurnacentBlock)new FurnacentBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightValue(13)).setRegistryName(Main.MODID,"furnacent");
 		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent));
 		public static final ContainerType<FurnacentContainer> furnacentCont = Null();
+
+		
+		public static final NtoreBlock ntore = (NtoreBlock) new NtoreBlock().setRegistryName(Main.MODID, "ntore");
+		
+
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
 		{
 			blockRegistryEvent.getRegistry().registerAll(
-				furnacent
+				furnacent,
+				ntore
 			);
+		}
+		@SubscribeEvent
+		public static void onItemsRegistry(final RegistryEvent.Register<Item> itemRegistryEvent)
+		{
+			itemRegistryEvent.getRegistry().register(new BlockItem(ModBlocks.NTOREBLOCK, new Item.Properties()).setRegistryName("ntore"));
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
