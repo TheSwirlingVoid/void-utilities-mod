@@ -25,6 +25,6 @@ public class FurnacentFuelSlot extends Slot {
    }
 
    public static boolean isBucket(ItemStack stack) {
-      return stack.getItem() == Items.BUCKET;
+      return stack.getItem() == Items.BUCKET||stack.getItem()==Items.WATER_BUCKET;
    }
 }

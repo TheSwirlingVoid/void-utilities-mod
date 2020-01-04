@@ -76,7 +76,6 @@ public class Main
 		}
 		@SubscribeEvent
 		public static void registerContainerTypes(final RegistryEvent.Register<ContainerType<?>> event) {
-			System.out.println("registcontainer");
 			event.getRegistry().registerAll(
 					new ContainerType<>(FurnacentContainer::new).setRegistryName("furnacentcont")
 			);

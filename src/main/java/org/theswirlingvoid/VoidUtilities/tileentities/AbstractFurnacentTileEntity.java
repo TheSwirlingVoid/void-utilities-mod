@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import javax.annotation.Nullable;
 
 import org.theswirlingvoid.VoidUtilities.blocks.AbstractFurnacentBlock;
+import org.theswirlingvoid.VoidUtilities.items.ModItems;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -154,6 +155,7 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
       addItemBurnTime(map, Blocks.FLETCHING_TABLE, 300);
       addItemBurnTime(map, Blocks.SMITHING_TABLE, 300);
       addItemBurnTime(map, Blocks.COMPOSTER, 300);
+      addItemBurnTime(map,ModItems.ingotnt,800,true);
       return map;
    }
 
@@ -165,9 +167,15 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
    }
 
    private static void addItemBurnTime(Map<Item, Integer> map, IItemProvider itemProvider, int burnTimeIn) {
-      map.put(itemProvider.asItem(), burnTimeIn);
+	   addItemBurnTime(map,itemProvider,burnTimeIn,false);
    }
-
+   private static void addItemBurnTime(Map<Item, Integer> map, IItemProvider itemProvider, int burnTimeIn, boolean bool) {
+	   if (bool) {
+	      map.put(itemProvider.asItem(), burnTimeIn);
+	   } else {
+		   map.put(itemProvider.asItem(), burnTimeIn/32);
+	   }
+   }
    private boolean isBurning() {
       return this.burnTime > 0;
    }
