@@ -55,7 +55,8 @@ public class Main
 		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, furnacent));
 		public static final ContainerType<FurnacentContainer> furnacentCont = Null();
 
-		
+		public static final BlockItem ntoreitem=(BlockItem) new BlockItem(ModBlocks.NTOREBLOCK, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(Main.MODID,"ntore");
+			public static final BlockItem furnacentitem=(BlockItem)new BlockItem(furnacent, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.SEARCH).group(ItemGroup.DECORATIONS)).setRegistryName(Main.MODID,"furnacent");
 		public static final NtoreBlock ntore = (NtoreBlock) new NtoreBlock().setRegistryName(Main.MODID, "ntore");
 		
 
@@ -70,8 +71,9 @@ public class Main
 		@SubscribeEvent
 		public static void onItemsRegistry(final RegistryEvent.Register<Item> itemRegistryEvent)
 		{
-			itemRegistryEvent.getRegistry().registerAll(new BlockItem(ModBlocks.NTOREBLOCK, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(Main.MODID,"ntore"),
-					new BlockItem(furnacent, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.SEARCH).group(ItemGroup.DECORATIONS)).setRegistryName(Main.MODID,"furnacent"));
+			itemRegistryEvent.getRegistry().registerAll(
+					ntoreitem,
+					furnacentitem);
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
