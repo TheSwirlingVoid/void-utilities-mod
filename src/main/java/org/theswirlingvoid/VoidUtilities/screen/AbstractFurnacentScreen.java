@@ -6,11 +6,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.gui.recipebook.AbstractRecipeBookGui;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
-import net.minecraft.client.gui.recipebook.RecipeBookGui;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.AbstractFurnaceContainer;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractFurnacentScreen<T extends AbstractFurnacentContainer> extends ContainerScreen<T> implements IRecipeShownListener {
-   private static final ResourceLocation field_214089_l = new ResourceLocation("textures/gui/recipe_button.png");
    private boolean field_214090_m;
    private final ResourceLocation field_214091_n;
 
@@ -67,7 +63,10 @@ public abstract class AbstractFurnacentScreen<T extends AbstractFurnacentContain
       }
 
       int l = ((AbstractFurnacentContainer)this.container).getCookProgressionScaled();
-      this.blit(i + 79, j + 34, 176, 14, l + 1, 16);
+      if (l==0) {
+    	  this.blit(102, j + 34, 176, 14, 0, 16);
+      }
+      this.blit(i + 79, j + 34, 176, 14, 23-l, 16);
    }
 
    public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {

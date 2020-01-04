@@ -7,18 +7,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IRecipeHelperPopulator;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.FurnaceFuelSlot;
-import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.inventory.container.RecipeBookContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.item.crafting.ServerRecipePlacerFurnace;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.world.World;
@@ -120,7 +116,6 @@ public abstract class AbstractFurnacentContainer extends RecipeBookContainer<IIn
 
             slot.onSlotChange(itemstack1, itemstack);
          } else if (index != 1 && index != 0) {
-        	 
             if (this.func_217057_a(itemstack1)) {
                if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                   return ItemStack.EMPTY;

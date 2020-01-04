@@ -15,6 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -23,6 +24,7 @@ import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -31,7 +33,6 @@ import net.minecraftforge.registries.ObjectHolder;
 @Mod(Main.MODID)
 public class Main 
 {
-	@SuppressWarnings({"ConstantConditions", "SameReturnValue"})
 	public static <T> T Null() {
 		return null;
 	}
@@ -41,9 +42,10 @@ public class Main
 	{
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 	}
+	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	private void setup(final FMLCommonSetupEvent event)
 	{
-		ClientProxy.init();
+		proxy.init();
 	}
 	@ObjectHolder(Main.MODID)
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
@@ -68,7 +70,8 @@ public class Main
 		@SubscribeEvent
 		public static void onItemsRegistry(final RegistryEvent.Register<Item> itemRegistryEvent)
 		{
-			itemRegistryEvent.getRegistry().register(new BlockItem(ModBlocks.NTOREBLOCK, new Item.Properties()).setRegistryName("ntore"));
+			itemRegistryEvent.getRegistry().registerAll(new BlockItem(ModBlocks.NTOREBLOCK, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(Main.MODID,"ntore"),
+					new BlockItem(furnacent, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.SEARCH).group(ItemGroup.DECORATIONS)).setRegistryName(Main.MODID,"furnacent"));
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
@@ -101,7 +104,6 @@ public class Main
 				LOGGER.warn("No data fixer registered for TileEntity {}", registryName);
 			}
 
-			@SuppressWarnings("ConstantConditions")
 			// dataFixerType will always be null until mod data fixers are implemented
 			final TileEntityType<T> tileEntityType = builder.build(dataFixerType);
 			tileEntityType.setRegistryName(registryName);

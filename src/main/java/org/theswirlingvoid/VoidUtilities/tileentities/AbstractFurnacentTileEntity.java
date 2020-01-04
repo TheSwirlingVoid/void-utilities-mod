@@ -279,7 +279,7 @@ public ItemStack getei(ItemStack[] itemstackbr){
 	return ItemStack.EMPTY;
 }
    protected boolean canSmelt(@Nullable IRecipe<?> recipeIn) {
-	   if (recipeIn.getRecipeOutput().getItem() == Items.IRON_NUGGET||recipeIn.getRecipeOutput().getItem() == Items.GOLD_NUGGET) {
+	   if (recipeIn!=null&&(recipeIn.getRecipeOutput().getItem() == Items.IRON_NUGGET||recipeIn.getRecipeOutput().getItem() == Items.GOLD_NUGGET)) {
 		   return false;
 	   }
       if (!this.items.get(0).isEmpty() && recipeIn != null) {
