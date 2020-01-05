@@ -155,7 +155,6 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
       addItemBurnTime(map, Blocks.FLETCHING_TABLE, 300);
       addItemBurnTime(map, Blocks.SMITHING_TABLE, 300);
       addItemBurnTime(map, Blocks.COMPOSTER, 300);
-      addItemBurnTime(map,ModItems.ingotnt,800,true);
       return map;
    }
 
