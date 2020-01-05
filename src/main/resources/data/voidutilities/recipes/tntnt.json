@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#F#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "voidutilities:ingotnt"
+        },
+        "F": {
+            "item": "minecraft:tnt"
+        }
+    },
+    "result": 
+	{
+	 "item": "voidutilities:tntnt",
+     "count": 1
+	}
+}
