@@ -160,7 +160,7 @@ public abstract class AbstractFurnacentTileEntity extends LockableTileEntity imp
 
    private static void addItemTagBurnTime(Map<Item, Integer> map, Tag<Item> itemTag, int p_213992_2_) {
       for(Item item : itemTag.getAllElements()) {
-         map.put(item, p_213992_2_);
+    	  addItemBurnTime(map,item,p_213992_2_,false);
       }
 
    }
