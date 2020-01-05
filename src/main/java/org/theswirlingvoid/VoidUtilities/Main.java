@@ -3,6 +3,7 @@ package org.theswirlingvoid.VoidUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.theswirlingvoid.VoidUtilities.blocks.ModBlocks;
+import org.theswirlingvoid.VoidUtilities.entities.TntntEntity;
 import org.theswirlingvoid.VoidUtilities.items.ModItems;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentContainer;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentTileEntity;
@@ -11,6 +12,9 @@ import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.types.Type;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -57,7 +61,8 @@ public class Main
 		{
 			blockRegistryEvent.getRegistry().registerAll(
 				ModBlocks.furnacent,
-				ModBlocks.ntore
+				ModBlocks.ntore,
+				ModBlocks.tntnt
 			);
 		}
 		@SubscribeEvent
@@ -66,7 +71,8 @@ public class Main
 			itemRegistryEvent.getRegistry().registerAll(
 					ModItems.ntoreitem,
 					ModItems.furnacentitem,
-					ModItems.ingotnt);
+					ModItems.ingotnt,
+					ModItems.tntntitem);
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
@@ -74,6 +80,34 @@ public class Main
 			tileEntityRegistryEvent.getRegistry().registerAll(
 					furnacentTE
 			);
+		}
+		@SubscribeEvent
+		public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
+			
+			final EntityType<TntntEntity> TNTNT = buildEnt(
+					"tntnt",
+					
+					EntityType.Builder.<TntntEntity>create((TntntEntity::new), EntityClassification.MISC)
+					.setCustomClientFactory(TntntEntity::new)
+							.size(1.0f, 1.0f)
+							
+			);
+			event.getRegistry().registerAll(
+					TNTNT
+					);
+		
+			
+		}
+		private static <T extends Entity> EntityType<T> buildEnt(String name, EntityType.Builder<T> builder) {
+			final ResourceLocation registryName = new ResourceLocation(Main.MODID, name);
+
+			final EntityType<T> entityType = builder
+					.build(registryName.toString());
+
+			entityType.setRegistryName(registryName);
+			
+
+			return entityType;
 		}
 		@SubscribeEvent
 		public static void registerContainerTypes(final RegistryEvent.Register<ContainerType<?>> event) {
