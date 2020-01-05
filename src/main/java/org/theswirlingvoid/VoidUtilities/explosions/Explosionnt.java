@@ -1,11 +1,14 @@
 package org.theswirlingvoid.VoidUtilities.explosions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nullable;
+
+import org.theswirlingvoid.VoidUtilities.blocks.TntntBlock;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -14,15 +17,14 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.TNTBlock;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -34,9 +36,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -222,6 +221,7 @@ public class Explosionnt extends Explosion{
       }
 
       if (flag) {
+    	  ArrayList<BlockPos> visited=new ArrayList<BlockPos>();
          for(BlockPos blockpos : this.affectedBlockPositions) {
             BlockState blockstate = this.world.getBlockState(blockpos);
             Block block = blockstate.getBlock();
@@ -244,13 +244,15 @@ public class Explosionnt extends Explosion{
                this.world.addParticle(ParticleTypes.POOF, (d0 + this.x) / 2.0D, (d1 + this.y) / 2.0D, (d2 + this.z) / 2.0D, d3, d4, d5);
                this.world.addParticle(ParticleTypes.SMOKE, d0, d1, d2, d3, d4, d5);
             }
-
             if (blockstate.isAir(this.world, blockpos)) {
-            	if(this.random.nextInt(50)==0||this.world.getBlockState(blockpos.down()).isOpaqueCube(this.world, blockpos.down())) {
+            	visited.add(blockpos);
+            	if(this.random.nextInt(50)==0||(this.world.getBlockState(blockpos.down()).isOpaqueCube(this.world, blockpos.down())&&!visited.contains(blockpos.down()))) {
             		this.world.setBlockState(blockpos, Blocks.STONE.getDefaultState());
             	} else {
             		this.world.setBlockState(blockpos, Blocks.DIRT.getDefaultState());
             	}
+            } else if (blockstate.getBlock() instanceof TNTBlock||blockstate.getBlock() instanceof TntntBlock){
+            	blockstate.onBlockExploded(this.world, blockpos, this);
             }
          }
       }
