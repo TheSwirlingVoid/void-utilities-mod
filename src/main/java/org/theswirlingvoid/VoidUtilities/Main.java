@@ -62,7 +62,9 @@ public class Main
 			blockRegistryEvent.getRegistry().registerAll(
 				ModBlocks.furnacent,
 				ModBlocks.ntore,
-				ModBlocks.tntnt
+				ModBlocks.tntnt,
+				ModBlocks.soulsandnt,
+				ModBlocks.BUBBLE_COLUMN
 			);
 		}
 		@SubscribeEvent
@@ -72,7 +74,8 @@ public class Main
 					ModItems.ntoreitem,
 					ModItems.furnacentitem,
 					ModItems.ingotnt,
-					ModItems.tntntitem);
+					ModItems.tntntitem,
+					ModItems.soulsandntitem);
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
