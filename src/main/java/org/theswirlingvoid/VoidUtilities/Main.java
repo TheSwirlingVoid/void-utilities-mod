@@ -43,6 +43,7 @@ public class Main
 	private void setup(final FMLCommonSetupEvent event)
 	{
 		proxy.init();
+		OreGeneration.setupOreGeneration();
 	}
 	@ObjectHolder(Main.MODID)
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
