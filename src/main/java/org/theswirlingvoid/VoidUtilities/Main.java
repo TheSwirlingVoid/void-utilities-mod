@@ -71,7 +71,7 @@ public class Main
 				ModBlocks.furnacent,
 				ModBlocks.ntore,
 				ModBlocks.tntnt,
-				ModBlocks.combiner
+				ModBlocks.combiner,
 				ModBlocks.soulsandnt,
 				ModBlocks.BUBBLE_COLUMN
 			);
@@ -84,7 +84,7 @@ public class Main
 					ModItems.furnacentitem,
 					ModItems.ingotnt,
 					ModItems.tntntitem,
-					ModItems.combineritem);
+					ModItems.combineritem,
 					ModItems.soulsandntitem);
 		}
 		@SubscribeEvent
