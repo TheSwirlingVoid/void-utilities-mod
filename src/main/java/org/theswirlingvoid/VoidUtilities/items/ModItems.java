@@ -15,5 +15,6 @@ public class ModItems {
 	public static final BlockItem furnacentitem=(BlockItem)new BlockItem(ModBlocks.furnacent, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.DECORATIONS)).setRegistryName(Main.MODID,"furnacent");
 	public static final BlockItem tntntitem=(BlockItem)new BlockItem(ModBlocks.tntnt, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.REDSTONE)).setRegistryName(Main.MODID,"tntnt");
 	public static final BlockItem combineritem=(BlockItem)new BlockItem(ModBlocks.combiner, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.DECORATIONS)).setRegistryName(Main.MODID,"combiner");
+	public static final BlockItem soulsandntitem=(BlockItem)new BlockItem(ModBlocks.soulsandnt, new Item.Properties().group(ItemGroup.SEARCH).group(ItemGroup.REDSTONE)).setRegistryName(Main.MODID,"soulsandnt");
 
 }

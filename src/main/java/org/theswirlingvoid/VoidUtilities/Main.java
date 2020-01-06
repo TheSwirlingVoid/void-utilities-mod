@@ -72,6 +72,8 @@ public class Main
 				ModBlocks.ntore,
 				ModBlocks.tntnt,
 				ModBlocks.combiner
+				ModBlocks.soulsandnt,
+				ModBlocks.BUBBLE_COLUMN
 			);
 		}
 		@SubscribeEvent
@@ -83,6 +85,7 @@ public class Main
 					ModItems.ingotnt,
 					ModItems.tntntitem,
 					ModItems.combineritem);
+					ModItems.soulsandntitem);
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
