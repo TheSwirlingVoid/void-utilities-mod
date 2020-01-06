@@ -1,10 +1,13 @@
 package org.theswirlingvoid.VoidUtilities;
 
 import org.apache.logging.log4j.LogManager;
+
 import org.apache.logging.log4j.Logger;
 import org.theswirlingvoid.VoidUtilities.blocks.ModBlocks;
 import org.theswirlingvoid.VoidUtilities.entities.TntntEntity;
 import org.theswirlingvoid.VoidUtilities.items.ModItems;
+import org.theswirlingvoid.VoidUtilities.tileentities.CombinerBlockContainer;
+import org.theswirlingvoid.VoidUtilities.tileentities.CombinerTileEntity;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentContainer;
 import org.theswirlingvoid.VoidUtilities.tileentities.FurnacentTileEntity;
 
@@ -15,6 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +27,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -54,7 +60,9 @@ public class Main
 	public static class RegistryEvents
 	{
 		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, ModBlocks.furnacent));
+		public static final TileEntityType<CombinerTileEntity> combinerTE = TEbuild("combinerte",TileEntityType.Builder.create(CombinerTileEntity::new,ModBlocks.combiner));
 		public static final ContainerType<FurnacentContainer> furnacentCont = Null();
+		public static final ContainerType<CombinerBlockContainer> combinerCont = Null();
 		
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
@@ -62,7 +70,8 @@ public class Main
 			blockRegistryEvent.getRegistry().registerAll(
 				ModBlocks.furnacent,
 				ModBlocks.ntore,
-				ModBlocks.tntnt
+				ModBlocks.tntnt,
+				ModBlocks.combiner
 			);
 		}
 		@SubscribeEvent
@@ -72,13 +81,15 @@ public class Main
 					ModItems.ntoreitem,
 					ModItems.furnacentitem,
 					ModItems.ingotnt,
-					ModItems.tntntitem);
+					ModItems.tntntitem,
+					ModItems.combineritem);
 		}
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> tileEntityRegistryEvent)
 		{
 			tileEntityRegistryEvent.getRegistry().registerAll(
-					furnacentTE
+					furnacentTE,
+					combinerTE
 			);
 		}
 		@SubscribeEvent
@@ -114,6 +125,13 @@ public class Main
 			event.getRegistry().registerAll(
 					new ContainerType<>(FurnacentContainer::new).setRegistryName("furnacentcont")
 			);
+			
+			
+			event.getRegistry().register(IForgeContainerType.create((windowId,inv,data) -> {
+				BlockPos pos = data.readBlockPos();
+				return new CombinerBlockContainer(windowId, Main.proxy.getClientWorld(), pos, inv,Main.proxy.getClientPlayer());
+			}).setRegistryName("combinercont"));
+			
 		}
 		private static <T extends TileEntity> TileEntityType<T> TEbuild(final String name, final TileEntityType.Builder<T> builder) {
 			final ResourceLocation registryName = new ResourceLocation(Main.MODID, name);
