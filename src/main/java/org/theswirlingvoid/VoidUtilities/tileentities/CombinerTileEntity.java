@@ -62,7 +62,7 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 						@Override
 						public boolean isItemValid(int slot, @Nonnull ItemStack stack)
 						{
-							return(slot==0 || stack.getItem() != ModItems.ingotnt);
+							return(slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0));
 						}
 						@Nonnull
 						@Override
