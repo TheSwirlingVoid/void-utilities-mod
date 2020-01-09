@@ -43,6 +43,7 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 		super(RegistryEvents.combinerTE);
 	}
 	protected NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
+	//TODO: Change the number to 4
 	@Override
 	public void tick() 
 	{
@@ -79,6 +80,7 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 		if (handler == null)
 		{
 			handler = new ItemStackHandler(2)
+			//TODO: SWITCH TO 4 INSTEAD OF 2
 					{
 						@Override
 						public boolean isItemValid(int slot, @Nonnull ItemStack stack)

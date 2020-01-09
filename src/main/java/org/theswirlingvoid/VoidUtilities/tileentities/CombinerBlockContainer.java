@@ -41,26 +41,21 @@ public class CombinerBlockContainer extends Container
 	
 	public CombinerBlockContainer(int p_i50082_1_, PlayerInventory p_i50082_2_) {
 		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(2), p_i50082_2_, p_i50082_2_.player);
+    	//TODO: Change the new Inventory(2) to new Inventory(4)
 	   }
 	public CombinerBlockContainer(int windowId, World world,IInventory combinerInventory, PlayerInventory inventory,PlayerEntity player)
 	{
 		super(Main.RegistryEvents.combinerCont,windowId);
-//		tileEntity = world.getTileEntity(pos);
-//		tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 		assertInventorySize(combinerInventory, 2);
+    	//TODO: Change the number to 2
 		this.playerEntity = player;
 		this.playerInventory = new InvWrapper(inventory);
 		this.combinerInventory = combinerInventory;
-//		tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 			addSlot(new Slot(combinerInventory,0, 34, 21));
 			addSlot(new Slot(combinerInventory,1, 56, 21));
-//		});
-//		tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h2 -> {
-//			addSlot(new SlotItemHandler(h2,1, 56, 21));
-//			
-//		});
 		
 		layoutPlayerInventorySlots(8,84);
+		//TODO: I don't know what exactly this does so figure out how to change it
 	}
 	public void clear() {
 	      this.combinerInventory.clear();
@@ -120,6 +115,8 @@ public class CombinerBlockContainer extends Container
 	               }
 	            }  
 	         } else if (!this.mergeItemStack(itemstack1, 2, 38, false)) {
+	        	//TODO: Change the two numbers to 4 and 40
+	         	//TODO: I will have to change the rest as there isn't a simple solution to allow shift clicking
 	            return ItemStack.EMPTY;
 	         }
 
