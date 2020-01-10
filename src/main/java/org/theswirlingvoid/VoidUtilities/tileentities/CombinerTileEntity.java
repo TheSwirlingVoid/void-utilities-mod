@@ -64,6 +64,7 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 	{
 		CompoundNBT invTag = compound.getCompound("inv");
 		getHandler().deserializeNBT(invTag);
+		ItemStackHelper.loadAllItems(compound, this.items);
 		// TODO Auto-generated method stub
 		super.read(compound);
 	}
@@ -72,6 +73,7 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 	{
 		CompoundNBT tag = getHandler().serializeNBT();
 		compound.put("inv", tag);
+		ItemStackHelper.saveAllItems(compound, this.items);
 		// TODO Auto-generated method stub
 		return super.write(compound);
 	}
