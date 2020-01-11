@@ -35,7 +35,7 @@ public class CombinerBlock extends Block
 	      if (state.getBlock() != newState.getBlock()) {
 	         TileEntity tileentity = worldIn.getTileEntity(pos);
 	         if (tileentity instanceof CombinerTileEntity) {
-	            InventoryHelper.dropInventoryItems(worldIn, pos, (AbstractFurnacentTileEntity)tileentity);
+	            InventoryHelper.dropInventoryItems(worldIn, pos, (CombinerTileEntity)tileentity);
 	            worldIn.updateComparatorOutputLevel(pos, this);
 	         }
 
