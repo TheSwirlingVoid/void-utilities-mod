@@ -57,7 +57,7 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 	{
 		if (handler == null)
 		{
-			handler = new ItemStackHandler(2)
+			handler = new ItemStackHandler(4)
 					{
 						@Override
 						public boolean isItemValid(int slot, @Nonnull ItemStack stack)
