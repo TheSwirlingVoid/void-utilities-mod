@@ -40,19 +40,19 @@ public class CombinerBlockContainer extends Container
 	private final IInventory combinerInventory;
 	
 	public CombinerBlockContainer(int p_i50082_1_, PlayerInventory p_i50082_2_) {
-		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(2), p_i50082_2_, p_i50082_2_.player);
-    	//TODO: Change the new Inventory(2) to new Inventory(4)
+		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(4), p_i50082_2_, p_i50082_2_.player);
 	   }
 	public CombinerBlockContainer(int windowId, World world,IInventory combinerInventory, PlayerInventory inventory,PlayerEntity player)
 	{
 		super(Main.RegistryEvents.combinerCont,windowId);
-		assertInventorySize(combinerInventory, 2);
-    	//TODO: Change the number to 2
+		assertInventorySize(combinerInventory, 4);
 		this.playerEntity = player;
 		this.playerInventory = new InvWrapper(inventory);
 		this.combinerInventory = combinerInventory;
 			addSlot(new Slot(combinerInventory,0, 34, 21));
 			addSlot(new Slot(combinerInventory,1, 56, 21));
+			addSlot(new Slot(combinerInventory,1, 45, 62));
+			addSlot(new Slot(combinerInventory,1, 115, 35));
 		
 		layoutPlayerInventorySlots(8,84);
 		//TODO: I don't know what exactly this does so figure out how to change it

@@ -82,8 +82,6 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 		if (handler == null)
 		{
 			handler = new ItemStackHandler(4)
-			handler = new ItemStackHandler(2)
-			//TODO: SWITCH TO 4 INSTEAD OF 2
 					{
 						@Override
 						public boolean isItemValid(int slot, @Nonnull ItemStack stack)

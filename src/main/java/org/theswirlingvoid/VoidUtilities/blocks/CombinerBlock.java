@@ -29,7 +29,6 @@ public class CombinerBlock extends Block
 	public CombinerBlock() 
 	{
 		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.5f).harvestLevel(0).harvestTool(ToolType.PICKAXE));
-		// TODO Auto-generated constructor stub
 	}
 	@SuppressWarnings("deprecation")
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
