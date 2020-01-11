@@ -2,12 +2,7 @@ package org.theswirlingvoid.VoidUtilities.tileentities;
 
 
 
-import javax.annotation.Nonnull;
-
-import org.theswirlingvoid.VoidUtilities.CustomRecipeType;
 import org.theswirlingvoid.VoidUtilities.Main;
-import org.theswirlingvoid.VoidUtilities.Main.RegistryEvents;
-import org.theswirlingvoid.VoidUtilities.blocks.ModBlocks;
 import org.theswirlingvoid.VoidUtilities.items.ModItems;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,19 +11,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -49,10 +35,10 @@ public class CombinerBlockContainer extends Container
 		this.playerEntity = player;
 		this.playerInventory = new InvWrapper(inventory);
 		this.combinerInventory = combinerInventory;
-			addSlot(new Slot(combinerInventory,0, 34, 21));
-			addSlot(new Slot(combinerInventory,1, 56, 21));
-			addSlot(new Slot(combinerInventory,2, 45, 62));
-			addSlot(new Slot(combinerInventory,3, 116, 35));
+			addSlot(new CombinerIngredientSlot(combinerInventory,0, 34, 21));
+			addSlot(new CombinerIngotntSlot(combinerInventory,1, 56, 21));
+			addSlot(new CombinerFuelSlot(combinerInventory,2, 45, 62));
+			addSlot(new CombinerResultSlot(combinerInventory,3, 116, 35));
 		
 		layoutPlayerInventorySlots(8,84);
 		//TODO: I don't know what exactly this does so figure out how to change it
@@ -105,6 +91,11 @@ public class CombinerBlockContainer extends Container
 	         ItemStack itemstack1 = slot.getStack();
 	         itemstack = itemstack1.copy();
 	         if (index != 1 && index != 0&& index != 2&& index != 3) {
+	        	 if (itemstack.getItem()==Items.DIAMOND) {
+	        		 if (!this.mergeItemStack(itemstack1, 2, 3, false)) {
+		                  return ItemStack.EMPTY;
+		               }
+	        	 }else
 	            if (itemstack.getItem()!=ModItems.ingotnt) {
 	               if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
 	                  return ItemStack.EMPTY;
