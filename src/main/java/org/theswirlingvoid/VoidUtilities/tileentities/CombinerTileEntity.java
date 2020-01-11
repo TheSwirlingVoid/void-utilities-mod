@@ -42,7 +42,7 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 	{
 		super(RegistryEvents.combinerTE);
 	}
-	protected NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
+	protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
 	//TODO: Change the number to 4
 	@Override
 	public void tick() 
@@ -86,13 +86,22 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 						@Override
 						public boolean isItemValid(int slot, @Nonnull ItemStack stack)
 						{
+//							if (slot<2) {
 							return(slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0));
+//							} else {
+//								return true;
+//							}
 						}
 						@Nonnull
 						@Override
 						public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
 						{
-							return (slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0))? stack: super.insertItem(slot, stack, simulate);
+//							if (slot<2) {
+								return (slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0))? stack: super.insertItem(slot, stack, simulate);
+//								} else {
+//									return super.insertItem(slot, stack, simulate);
+//								}
+							
 						}
 					};
 			
@@ -201,7 +210,11 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 	 @Override
 		public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack)
 		{
-			return(slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0));
+//		 if (slot<2) {
+				return(slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0));
+//				} else {
+//					return true;
+//				}
 		}
 
 	   /**
@@ -215,8 +228,11 @@ public class CombinerTileEntity extends TileEntity implements ITickableTileEntit
 	public int[] getSlotsForFace(Direction arg0) {
 		// TODO Auto-generated method stub
 		if(arg0 == Direction.DOWN) {
-			return new int[] {};
-		}
+			return new int[] {3};
+		} else if (arg0==Direction.UP) {
 		return new int[] {0,1};
+		} else {
+			return new int[] {2};
+		}
 	}
 }

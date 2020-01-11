@@ -51,8 +51,8 @@ public class CombinerBlockContainer extends Container
 		this.combinerInventory = combinerInventory;
 			addSlot(new Slot(combinerInventory,0, 34, 21));
 			addSlot(new Slot(combinerInventory,1, 56, 21));
-			addSlot(new Slot(combinerInventory,1, 45, 62));
-			addSlot(new Slot(combinerInventory,1, 115, 35));
+			addSlot(new Slot(combinerInventory,2, 45, 62));
+			addSlot(new Slot(combinerInventory,3, 116, 35));
 		
 		layoutPlayerInventorySlots(8,84);
 		//TODO: I don't know what exactly this does so figure out how to change it
@@ -104,7 +104,7 @@ public class CombinerBlockContainer extends Container
 	      if (slot != null && slot.getHasStack()) {
 	         ItemStack itemstack1 = slot.getStack();
 	         itemstack = itemstack1.copy();
-	         if (index != 1 && index != 0) {
+	         if (index != 1 && index != 0&& index != 2&& index != 3) {
 	            if (itemstack.getItem()!=ModItems.ingotnt) {
 	               if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
 	                  return ItemStack.EMPTY;
@@ -114,7 +114,7 @@ public class CombinerBlockContainer extends Container
 	                  return ItemStack.EMPTY;
 	               }
 	            }  
-	         } else if (!this.mergeItemStack(itemstack1, 2, 38, false)) {
+	         } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
 	        	//TODO: Change the two numbers to 4 and 40
 	         	//TODO: I will have to change the rest as there isn't a simple solution to allow shift clicking
 	            return ItemStack.EMPTY;
