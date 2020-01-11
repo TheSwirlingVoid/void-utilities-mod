@@ -1,5 +1,6 @@
 package org.theswirlingvoid.VoidUtilities.blocks;
 
+import org.theswirlingvoid.VoidUtilities.tileentities.AbstractFurnacentTileEntity;
 import org.theswirlingvoid.VoidUtilities.tileentities.CombinerTileEntity;
 
 import net.minecraft.block.Block;
@@ -8,6 +9,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
@@ -29,7 +31,18 @@ public class CombinerBlock extends Block
 		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.5f).harvestLevel(0).harvestTool(ToolType.PICKAXE));
 		// TODO Auto-generated constructor stub
 	}
-	
+	@SuppressWarnings("deprecation")
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	      if (state.getBlock() != newState.getBlock()) {
+	         TileEntity tileentity = worldIn.getTileEntity(pos);
+	         if (tileentity instanceof CombinerTileEntity) {
+	            InventoryHelper.dropInventoryItems(worldIn, pos, (AbstractFurnacentTileEntity)tileentity);
+	            worldIn.updateComparatorOutputLevel(pos, this);
+	         }
+
+	         super.onReplaced(state, worldIn, pos, newState, isMoving);
+	      }
+	   }
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) 
 	{
@@ -58,6 +71,7 @@ public class CombinerBlock extends Block
 			if (tileEntity instanceof INamedContainerProvider)
 			{
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
+			return true;
 			}
 		}
 		// TODO Auto-generated method stub

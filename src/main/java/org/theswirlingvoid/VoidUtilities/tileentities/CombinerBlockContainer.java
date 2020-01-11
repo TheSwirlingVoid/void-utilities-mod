@@ -4,18 +4,26 @@ package org.theswirlingvoid.VoidUtilities.tileentities;
 
 import javax.annotation.Nonnull;
 
+import org.theswirlingvoid.VoidUtilities.CustomRecipeType;
 import org.theswirlingvoid.VoidUtilities.Main;
+import org.theswirlingvoid.VoidUtilities.Main.RegistryEvents;
 import org.theswirlingvoid.VoidUtilities.blocks.ModBlocks;
 import org.theswirlingvoid.VoidUtilities.items.ModItems;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -26,33 +34,37 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class CombinerBlockContainer extends Container 
 {
-	private TileEntity tileEntity;
+//	private TileEntity tileEntity;
 	private PlayerEntity playerEntity;
 	private IItemHandler playerInventory;
+	private final IInventory combinerInventory;
 	
-	public CombinerBlockContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory,PlayerEntity player)
+	public CombinerBlockContainer(int p_i50082_1_, PlayerInventory p_i50082_2_) {
+		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(2), p_i50082_2_, p_i50082_2_.player);
+    	//TODO: Change the new Inventory(2) to new Inventory(4)
+	   }
+	public CombinerBlockContainer(int windowId, World world,IInventory combinerInventory, PlayerInventory inventory,PlayerEntity player)
 	{
 		super(Main.RegistryEvents.combinerCont,windowId);
-		tileEntity = world.getTileEntity(pos);
-		tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		assertInventorySize(combinerInventory, 2);
+    	//TODO: Change the number to 2
 		this.playerEntity = player;
 		this.playerInventory = new InvWrapper(inventory);
-		
-		tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-			addSlot(new SlotItemHandler(h,0, 34, 21));
-			
-		});
-		tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h2 -> {
-			addSlot(new SlotItemHandler(h2,1, 56, 21));
-			
-		});
+		this.combinerInventory = combinerInventory;
+			addSlot(new Slot(combinerInventory,0, 34, 21));
+			addSlot(new Slot(combinerInventory,1, 56, 21));
 		
 		layoutPlayerInventorySlots(8,84);
+		//TODO: I don't know what exactly this does so figure out how to change it
 	}
+	public void clear() {
+	      this.combinerInventory.clear();
+	   }
 	@Override
 	public boolean canInteractWith(PlayerEntity player) 
 	{
-		return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, ModBlocks.combiner);
+		return this.combinerInventory.isUsableByPlayer(playerEntity);
+//		return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, ModBlocks.combiner);
 	}
 	public void addSlot (IItemHandler handler, int index, int x, int y)
 	{
@@ -85,4 +97,42 @@ public class CombinerBlockContainer extends Container
 		topRow +=58;
 		addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
 	}
+	
+	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+	      ItemStack itemstack = ItemStack.EMPTY;
+	      Slot slot = this.inventorySlots.get(index);
+	      if (slot != null && slot.getHasStack()) {
+	         ItemStack itemstack1 = slot.getStack();
+	         itemstack = itemstack1.copy();
+	         if (index != 1 && index != 0) {
+	            if (itemstack.getItem()!=ModItems.ingotnt) {
+	               if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+	                  return ItemStack.EMPTY;
+	               }
+	            } else {
+	               if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+	                  return ItemStack.EMPTY;
+	               }
+	            }  
+	         } else if (!this.mergeItemStack(itemstack1, 2, 38, false)) {
+	        	//TODO: Change the two numbers to 4 and 40
+	         	//TODO: I will have to change the rest as there isn't a simple solution to allow shift clicking
+	            return ItemStack.EMPTY;
+	         }
+
+	         if (itemstack1.isEmpty()) {
+	            slot.putStack(ItemStack.EMPTY);
+	         } else {
+	            slot.onSlotChanged();
+	         }
+
+	         if (itemstack1.getCount() == itemstack.getCount()) {
+	            return ItemStack.EMPTY;
+	         }
+
+	         slot.onTake(playerIn, itemstack1);
+	      }
+
+	      return itemstack;
+	   }
 }

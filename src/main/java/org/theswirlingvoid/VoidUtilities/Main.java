@@ -1,9 +1,10 @@
 package org.theswirlingvoid.VoidUtilities;
 
 import org.apache.logging.log4j.LogManager;
-
 import org.apache.logging.log4j.Logger;
 import org.theswirlingvoid.VoidUtilities.blocks.ModBlocks;
+import org.theswirlingvoid.VoidUtilities.combinerrecipes.CombinerRecipe;
+import org.theswirlingvoid.VoidUtilities.combinerrecipes.CombinerRecipeSerializer;
 import org.theswirlingvoid.VoidUtilities.entities.TntntEntity;
 import org.theswirlingvoid.VoidUtilities.items.ModItems;
 import org.theswirlingvoid.VoidUtilities.tileentities.CombinerBlockContainer;
@@ -18,17 +19,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -40,6 +39,7 @@ import net.minecraftforge.registries.ObjectHolder;
 @Mod(Main.MODID)
 public class Main 
 {
+	
 	public static <T> T Null() {
 		return null;
 	}
@@ -47,6 +47,7 @@ public class Main
 	private static final Logger LOGGER = LogManager.getLogger();
 	public Main()
 	{
+		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 	}
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
@@ -59,10 +60,12 @@ public class Main
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 	public static class RegistryEvents
 	{
+		public static final CombinerRecipeSerializer<CombinerRecipe> combinerrecipe=(CombinerRecipeSerializer<CombinerRecipe>) new CombinerRecipeSerializer<>(CombinerRecipe::new, 100).setRegistryName(Main.MODID, "combining");
 		public static final TileEntityType<FurnacentTileEntity> furnacentTE = TEbuild("furnacentte", TileEntityType.Builder.create(FurnacentTileEntity::new, ModBlocks.furnacent));
 		public static final TileEntityType<CombinerTileEntity> combinerTE = TEbuild("combinerte",TileEntityType.Builder.create(CombinerTileEntity::new,ModBlocks.combiner));
 		public static final ContainerType<FurnacentContainer> furnacentCont = Null();
 		public static final ContainerType<CombinerBlockContainer> combinerCont = Null();
+//		public static final IRecipeType<CombinerRecipe> combinerrecipetype= Null();
 		
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
@@ -93,6 +96,18 @@ public class Main
 			tileEntityRegistryEvent.getRegistry().registerAll(
 					furnacentTE,
 					combinerTE
+			);
+		}
+//		@SubscribeEvent
+//		public static void maybe(RegistryEvent.Register<> event) {
+//			event.
+//		}
+		@SubscribeEvent
+		public static void onRecipeCerealRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> recipeRegistryEvent)
+		{
+			
+			recipeRegistryEvent.getRegistry().registerAll(
+					combinerrecipe
 			);
 		}
 		@SubscribeEvent
@@ -126,14 +141,15 @@ public class Main
 		@SubscribeEvent
 		public static void registerContainerTypes(final RegistryEvent.Register<ContainerType<?>> event) {
 			event.getRegistry().registerAll(
-					new ContainerType<>(FurnacentContainer::new).setRegistryName("furnacentcont")
+					new ContainerType<>(FurnacentContainer::new).setRegistryName("furnacentcont"),
+					new ContainerType<>(CombinerBlockContainer::new).setRegistryName("combinercont")
 			);
 			
 			
-			event.getRegistry().register(IForgeContainerType.create((windowId,inv,data) -> {
-				BlockPos pos = data.readBlockPos();
-				return new CombinerBlockContainer(windowId, Main.proxy.getClientWorld(), pos, inv,Main.proxy.getClientPlayer());
-			}).setRegistryName("combinercont"));
+//			event.getRegistry().register(IForgeContainerType.create((windowId,inv,data) -> {
+//				BlockPos pos = data.readBlockPos();
+//				return new CombinerBlockContainer(windowId, Main.proxy.getClientWorld(), pos, inv,Main.proxy.getClientPlayer());
+//			}).setRegistryName("combinercont"));
 			
 		}
 		private static <T extends TileEntity> TileEntityType<T> TEbuild(final String name, final TileEntityType.Builder<T> builder) {
