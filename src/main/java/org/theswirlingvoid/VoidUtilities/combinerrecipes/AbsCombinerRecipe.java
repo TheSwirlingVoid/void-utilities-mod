@@ -25,8 +25,9 @@ public abstract class AbsCombinerRecipe implements IRecipe<IInventory> {
    protected final ItemStack result;
    protected final float experience;
    protected final int cookTime;
+   protected final int ingotntamount;
 
-   public AbsCombinerRecipe(IRecipeType<?> typeIn, ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
+   public AbsCombinerRecipe(IRecipeType<?> typeIn, ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn,int ingotntamount) {
       this.type = typeIn;
       this.id = idIn;
       this.group = groupIn;
@@ -34,6 +35,7 @@ public abstract class AbsCombinerRecipe implements IRecipe<IInventory> {
       this.result = resultIn;
       this.experience = experienceIn;
       this.cookTime = cookTimeIn;
+      this.ingotntamount = ingotntamount;
    }
 
    public boolean matches(IInventory inv, World worldIn) {
@@ -71,7 +73,9 @@ public abstract class AbsCombinerRecipe implements IRecipe<IInventory> {
    public ItemStack getRecipeOutput() {
       return this.result;
    }
-
+   public int getIngotntAmount() {
+	      return this.ingotntamount;
+	   }
    /**
     * Recipes with equal group are combined into one button in the recipe book
     */

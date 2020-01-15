@@ -12,8 +12,8 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 
 public class CombinerRecipe extends AbsCombinerRecipe{
-	public CombinerRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
-	      super(CustomRecipeType.COMBINING, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
+	public CombinerRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn,int ingotntamount) {
+	      super(CustomRecipeType.COMBINING, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn,ingotntamount);
 	   }
 
 	   public ItemStack getIcon() {

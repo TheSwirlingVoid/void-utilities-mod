@@ -130,7 +130,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 		fuelTime--;
 		} 
 			if (!this.world.isRemote) {
-		if (recipe!=null&&this.items.get(1).getItem()==ModItems.ingotnt&&flag) {
+		if (recipe!=null&&this.items.get(1).getItem()==ModItems.ingotnt&&this.items.get(1).getCount()>=((AbsCombinerRecipe)recipe).getIngotntAmount()&&flag) {
 			if (recipe.getRecipeOutput().isItemEqual(this.items.get(3))||this.items.get(3).isEmpty()) {
 			this.combineTimeTotal=((AbsCombinerRecipe)recipe).getCookTime();
 			this.combineTime++;
@@ -139,7 +139,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 				combine(recipe);
 			}
 			}
-		}else if(this.items.get(2).getItem()==Items.DIAMOND&&recipe!=null&&this.items.get(1).getItem()==ModItems.ingotnt&&!flag){
+		}else if(this.items.get(2).getItem()==Items.DIAMOND&&recipe!=null&&this.items.get(1).getItem()==ModItems.ingotnt&&this.items.get(1).getCount()>=((AbsCombinerRecipe)recipe).getIngotntAmount()&&!flag){
 			if (recipe.getRecipeOutput().isItemEqual(this.items.get(3))||this.items.get(3).isEmpty()) {
 				this.items.get(2).shrink(1);
 				fuelTime=8000;
@@ -168,7 +168,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 //	public int getCombineProgress() {
 //		return (float)this.combineTime
 //	}
-	public void combine(IRecipe recipe){
+	public void combine(IRecipe<?> recipe){
 		ItemStack itemstack=this.items.get(0);
 		ItemStack itemstack1=recipe.getRecipeOutput();
 		ItemStack itemstack2 = this.items.get(3);
@@ -178,7 +178,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
             itemstack2.grow(1);
          }
          itemstack.shrink(1);
-         this.items.get(1).shrink(1);
+         this.items.get(1).shrink(((AbsCombinerRecipe)recipe).getIngotntAmount());
          setRecipeUsed(recipe);
 	}
 	@Override

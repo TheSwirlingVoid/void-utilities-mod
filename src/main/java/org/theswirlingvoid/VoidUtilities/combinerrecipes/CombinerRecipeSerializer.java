@@ -40,7 +40,8 @@ public class CombinerRecipeSerializer<T extends AbsCombinerRecipe> extends net.m
       }
       float f = JSONUtils.getFloat(json, "experience", 0.0F);
       int i = JSONUtils.getInt(json, "cookingtime", this.field_222178_t);
-      return this.field_222179_u.create(recipeId, s, ingredient, itemstack, f, i);
+      int m = JSONUtils.getInt(json, "ingotntamount", 10);
+      return this.field_222179_u.create(recipeId, s, ingredient, itemstack, f, i,m);
    }
 
    public T read(ResourceLocation recipeId, PacketBuffer buffer) {
@@ -49,7 +50,8 @@ public class CombinerRecipeSerializer<T extends AbsCombinerRecipe> extends net.m
       ItemStack itemstack = buffer.readItemStack();
       float f = buffer.readFloat();
       int i = buffer.readVarInt();
-      return this.field_222179_u.create(recipeId, s, ingredient, itemstack, f, i);
+      int m= buffer.readVarInt();
+      return this.field_222179_u.create(recipeId, s, ingredient, itemstack, f, i, m);
    }
 
    public void write(PacketBuffer buffer, T recipe) {
@@ -58,9 +60,10 @@ public class CombinerRecipeSerializer<T extends AbsCombinerRecipe> extends net.m
       buffer.writeItemStack(recipe.result);
       buffer.writeFloat(recipe.experience);
       buffer.writeVarInt(recipe.cookTime);
+      buffer.writeVarInt(recipe.ingotntamount);
    }
 
    public interface IFactory<T extends AbsCombinerRecipe> {
-      T create(ResourceLocation p_create_1_, String p_create_2_, Ingredient p_create_3_, ItemStack p_create_4_, float p_create_5_, int p_create_6_);
+      T create(ResourceLocation p_create_1_, String p_create_2_, Ingredient p_create_3_, ItemStack p_create_4_, float p_create_5_, int p_create_6_, int p_create_7_);
    }
 }
