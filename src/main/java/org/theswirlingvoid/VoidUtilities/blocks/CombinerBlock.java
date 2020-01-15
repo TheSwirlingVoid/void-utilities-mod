@@ -7,11 +7,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -29,7 +31,16 @@ public class CombinerBlock extends Block
 	public CombinerBlock() 
 	{
 		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.5f).harvestLevel(0).harvestTool(ToolType.PICKAXE));
-	}
+	} 
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	      if (stack.hasDisplayName()) {
+	          TileEntity tileentity = worldIn.getTileEntity(pos);
+	          if (tileentity instanceof CombinerTileEntity) {
+	             ((CombinerTileEntity)tileentity).setCustomName(stack.getDisplayName());
+	          }
+	       }
+
+	    }
 	@SuppressWarnings("deprecation")
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	      if (state.getBlock() != newState.getBlock()) {

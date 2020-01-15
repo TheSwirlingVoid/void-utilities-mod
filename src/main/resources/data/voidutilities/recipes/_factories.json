@@ -1,5 +1,5 @@
 {
 	"recipes": {
-		"armour_upgrade_shaped": "org.theswirlingvoid.VoidUtilities.combinerrecipes.CombinerRecipe$Factory"
+		"combining": "org.theswirlingvoid.VoidUtilities.combinerrecipes.CombinerRecipe$Factory"
 	}
 }

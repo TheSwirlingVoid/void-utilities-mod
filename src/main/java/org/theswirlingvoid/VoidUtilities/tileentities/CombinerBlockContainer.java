@@ -13,7 +13,13 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -24,28 +30,39 @@ public class CombinerBlockContainer extends Container
 	private PlayerEntity playerEntity;
 	private IItemHandler playerInventory;
 	private final IInventory combinerInventory;
-	
+	private final IIntArray numbers;
 	public CombinerBlockContainer(int p_i50082_1_, PlayerInventory p_i50082_2_) {
-		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(4), p_i50082_2_, p_i50082_2_.player);
+		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(4), p_i50082_2_, p_i50082_2_.player,new IntArray(3));
 	   }
-	public CombinerBlockContainer(int windowId, World world,IInventory combinerInventory, PlayerInventory inventory,PlayerEntity player)
+	public CombinerBlockContainer(int windowId, World world,IInventory combinerInventory, PlayerInventory inventory,PlayerEntity player, IIntArray p_i50104_6_)
 	{
 		super(Main.RegistryEvents.combinerCont,windowId);
 		assertInventorySize(combinerInventory, 4);
+		assertIntArraySize(p_i50104_6_, 3);
 		this.playerEntity = player;
 		this.playerInventory = new InvWrapper(inventory);
 		this.combinerInventory = combinerInventory;
+		this.numbers=p_i50104_6_;
 			addSlot(new CombinerIngredientSlot(combinerInventory,0, 34, 21));
 			addSlot(new CombinerIngotntSlot(combinerInventory,1, 56, 21));
 			addSlot(new CombinerFuelSlot(combinerInventory,2, 45, 62));
-			addSlot(new CombinerResultSlot(combinerInventory,3, 116, 35));
-		
+			addSlot(new CombinerResultSlot(player,combinerInventory,3, 116, 35));
+			this.trackIntArray(p_i50104_6_);
 		layoutPlayerInventorySlots(8,84);
 		//TODO: I don't know what exactly this does so figure out how to change it
 	}
+	@OnlyIn(Dist.CLIENT)
+	   public int getCombineProgressionScaled() {
+	      int i = this.numbers.get(1);
+	      int j = this.numbers.get(2);
+	      return j != 0 && i != 0 ? i * 24 / j : 0;
+	   }
 	public void clear() {
 	      this.combinerInventory.clear();
 	   }
+	public int fuelProgressionScaled() {
+		return this.numbers.get(0) * 21 / 8000;
+	}
 	@Override
 	public boolean canInteractWith(PlayerEntity player) 
 	{
