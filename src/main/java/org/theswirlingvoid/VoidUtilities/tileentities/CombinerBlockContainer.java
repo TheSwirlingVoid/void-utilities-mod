@@ -11,12 +11,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,13 +31,13 @@ public class CombinerBlockContainer extends Container
 	private final IInventory combinerInventory;
 	private final IIntArray numbers;
 	public CombinerBlockContainer(int p_i50082_1_, PlayerInventory p_i50082_2_) {
-		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(4), p_i50082_2_, p_i50082_2_.player,new IntArray(3));
+		this(p_i50082_1_, p_i50082_2_.player.getEntityWorld(),new Inventory(4), p_i50082_2_, p_i50082_2_.player,new IntArray(4));
 	   }
 	public CombinerBlockContainer(int windowId, World world,IInventory combinerInventory, PlayerInventory inventory,PlayerEntity player, IIntArray p_i50104_6_)
 	{
 		super(Main.RegistryEvents.combinerCont,windowId);
 		assertInventorySize(combinerInventory, 4);
-		assertIntArraySize(p_i50104_6_, 3);
+		assertIntArraySize(p_i50104_6_, 4);
 		this.playerEntity = player;
 		this.playerInventory = new InvWrapper(inventory);
 		this.combinerInventory = combinerInventory;
@@ -61,7 +60,11 @@ public class CombinerBlockContainer extends Container
 	      this.combinerInventory.clear();
 	   }
 	public int fuelProgressionScaled() {
-		return this.numbers.get(0) * 21 / 8000;
+		if (this.numbers.get(3)!=0) {
+		return this.numbers.get(0) * 21 / this.numbers.get(3);
+		} else {
+			return 0;
+		}
 	}
 	@Override
 	public boolean canInteractWith(PlayerEntity player) 
@@ -100,7 +103,9 @@ public class CombinerBlockContainer extends Container
 		topRow +=58;
 		addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
 	}
-	
+	public boolean isFuel(Item item) {
+		return CombinerTileEntity.getFuelTimes().getOrDefault(item, 0)!=0;
+	}
 	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
 	      ItemStack itemstack = ItemStack.EMPTY;
 	      Slot slot = this.inventorySlots.get(index);
@@ -108,7 +113,7 @@ public class CombinerBlockContainer extends Container
 	         ItemStack itemstack1 = slot.getStack();
 	         itemstack = itemstack1.copy();
 	         if (index != 1 && index != 0&& index != 2&& index != 3) {
-	        	 if (itemstack.getItem()==Items.DIAMOND) {
+	        	 if (isFuel(itemstack.getItem())) {
 	        		 if (!this.mergeItemStack(itemstack1, 2, 3, false)) {
 		                  return ItemStack.EMPTY;
 		               }

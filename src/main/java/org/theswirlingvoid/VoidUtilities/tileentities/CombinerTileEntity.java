@@ -1,5 +1,6 @@
 package org.theswirlingvoid.VoidUtilities.tileentities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
@@ -43,6 +45,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class CombinerTileEntity extends LockableTileEntity implements ITickableTileEntity,ISidedInventory
 {
+	
 	public void func_213995_d(PlayerEntity p_213995_1_) {
 	      List<IRecipe<?>> list = Lists.newArrayList();
 
@@ -55,6 +58,15 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 
 	      this.field_214022_n.clear();
 	   }
+	public static Map<Item, Integer> getFuelTimes() {
+		Map<Item, Integer> map = Maps.newLinkedHashMap();
+		addBurnTime(map,Items.DIAMOND,8000);
+		addBurnTime(map,Items.DIAMOND_BLOCK,80000);
+		return map;
+	}
+	public static void addBurnTime(Map<Item,Integer> map,Item item, int time) {
+		map.put(item, time);
+	}
 	private final Map<ResourceLocation, Integer> field_214022_n = Maps.newHashMap();
 	   private static void func_214003_a(PlayerEntity p_214003_0_, int p_214003_1_, float p_214003_2_) {
 	      if (p_214003_2_ == 0.0F) {
@@ -79,6 +91,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 	private int fuelTime;
 	   private int combineTime;
 	   private int combineTimeTotal;
+	   private int totalfuelTime;
 	   protected final IIntArray combinerData = new IIntArray() {
 		      public int get(int index) {
 		         switch(index) {
@@ -88,6 +101,8 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 		            return CombinerTileEntity.this.combineTime;
 		         case 2:
 		            return CombinerTileEntity.this.combineTimeTotal;
+		         case 3:
+			        return CombinerTileEntity.this.totalfuelTime;
 		         default:
 		            return 0;
 		         }
@@ -103,12 +118,15 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 		            break;
 		         case 2:
 		        	 CombinerTileEntity.this.combineTimeTotal = value;
+		        	 break;
+		         case 3:
+				        CombinerTileEntity.this.totalfuelTime=value;
 		         }
 
 		      }
 
 		      public int size() {
-		         return 3;
+		         return 4;
 		      }
 		   };
 	public CombinerTileEntity()
@@ -126,6 +144,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 	{
 		boolean flag = this.combining();
 		IRecipe<?> recipe=getRecipe(this.items.get(0));
+		int fuel=getFuelTimes().getOrDefault(this.items.get(2).getItem(), 0);
 		if (flag) {
 		fuelTime--;
 		} 
@@ -139,10 +158,11 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 				combine(recipe);
 			}
 			}
-		}else if(this.items.get(2).getItem()==Items.DIAMOND&&recipe!=null&&this.items.get(1).getItem()==ModItems.ingotnt&&this.items.get(1).getCount()>=((AbsCombinerRecipe)recipe).getIngotntAmount()&&!flag){
+		}else if(fuel!=0&&recipe!=null&&this.items.get(1).getItem()==ModItems.ingotnt&&this.items.get(1).getCount()>=((AbsCombinerRecipe)recipe).getIngotntAmount()&&!flag){
 			if (recipe.getRecipeOutput().isItemEqual(this.items.get(3))||this.items.get(3).isEmpty()) {
 				this.items.get(2).shrink(1);
-				fuelTime=8000;
+				fuelTime=fuel;
+				totalfuelTime=fuel;
 			}
 		}else
 		{
@@ -151,8 +171,14 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 			} else {
 				this.combineTime--;
 			}
+			if (fuelTime==0) {
+				this.totalfuelTime=0;
+			}
 		}
 			}
+	}
+	public boolean isFuel(Item item) {
+		return getFuelTimes().getOrDefault(item, 0)!=0;
 	}
 	public IRecipe<?> getRecipe(ItemStack stack) {
 		for(IRecipe<?> rec:this.world.getRecipeManager().getRecipes()) {
@@ -189,6 +215,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 		this.fuelTime = compound.getInt("FuelTime");
 	      this.combineTime = compound.getInt("CombineTime");
 	      this.combineTimeTotal = compound.getInt("CombineTimeTotal");
+	      this.totalfuelTime = compound.getInt("FuelTimeTotal");
 	      int i = compound.getShort("RecipesUsedSize");
 
 	      for(int j = 0; j < i; ++j) {
@@ -215,6 +242,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 	      compound.putInt("CombineTime", this.combineTime);
 	      compound.putInt("CombineTimeTotal", this.combineTimeTotal);
 	      compound.putShort("RecipesUsedSize", (short)this.field_214022_n.size());
+	      compound.putInt("FuelTimeTotal",this.totalfuelTime);
 	      int i = 0;
 
 	      for(Entry<ResourceLocation, Integer> entry : this.field_214022_n.entrySet()) {
@@ -238,7 +266,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 							if (slot<2) {
 							return(slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0));
 							} else {
-								return slot==2&&stack.getItem()==Items.DIAMOND;
+								return slot==2&&isFuel(stack.getItem());
 							}
 						}
 						@Override
@@ -254,7 +282,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 							if (slot<2) {
 								return (slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0))? stack: super.insertItem(slot, stack, simulate);
 								} else {
-									return (slot==2&&stack.getItem()==Items.DIAMOND)? stack: super.insertItem(slot, stack, simulate);
+									return (slot==2&&isFuel(stack.getItem()))? stack: super.insertItem(slot, stack, simulate);
 								}
 							
 						}
@@ -362,7 +390,7 @@ public class CombinerTileEntity extends LockableTileEntity implements ITickableT
 		 if (slot<2) {
 				return(slot==(stack.getItem() == ModItems.ingotnt ? 1 : 0));
 				} else {
-					return stack.getItem()==Items.DIAMOND;
+					return isFuel(stack.getItem());
 				}
 		}
 

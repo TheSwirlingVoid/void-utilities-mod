@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#F#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "voidutilities:ingotnt"
+        },
+        "F": {
+            "item": "minecraft:furnace"
+        }
+    },
+    "result": 
+	{
+	 "item": "voidutilities:combiner",
+     "count": 1
+	}
+}

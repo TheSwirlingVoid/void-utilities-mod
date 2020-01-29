@@ -1,21 +1,10 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "###",
-        "#F#",
-        "###"
-    ],
-    "key": {
-        "#": {
-            "item": "voidutilities:ingotnt"
-        },
-        "F": {
-            "item": "minecraft:tnt"
-        }
+    "type": "voidutilities:combining",
+    "ingredient": {
+        "item": "minecraft:tnt"
     },
-    "result": 
-	{
-	 "item": "voidutilities:tntnt",
-     "count": 1
-	}
+    "result": "voidutilities:tntnt",
+    "experience": 60.4,
+    "ingotntamount": 8,
+    "cookingtime": 400
 }

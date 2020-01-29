@@ -1,0 +1,10 @@
+{
+    "type": "voidutilities:combining",
+    "ingredient": {
+        "item": "minecraft:soul_sand"
+    },
+    "result": "voidutilities:soulsandnt",
+    "experience": 400.4,
+    "ingotntamount": 32,
+    "cookingtime": 1200
+}

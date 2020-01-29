@@ -2,6 +2,7 @@ package org.theswirlingvoid.VoidUtilities.tileentities;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
@@ -15,9 +16,11 @@ public class CombinerFuelSlot extends Slot {
     * Check if the stack is allowed to be placed in this slot, used for armor slots as well as furnace fuel.
     */
    public boolean isItemValid(ItemStack stack) {
-      return stack.getItem()==Items.DIAMOND;
+      return isFuel(stack.getItem());
    }
-
+   public boolean isFuel(Item item) {
+		return CombinerTileEntity.getFuelTimes().getOrDefault(item, 0)!=0;
+	}
    public int getItemStackLimit(ItemStack stack) {
       return super.getItemStackLimit(stack);
    }
