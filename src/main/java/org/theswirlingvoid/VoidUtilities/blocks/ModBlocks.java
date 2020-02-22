@@ -2,6 +2,7 @@ package org.theswirlingvoid.VoidUtilities.blocks;
 
 import org.theswirlingvoid.VoidUtilities.Main;
 
+import net.minecraft.block.BeaconBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,5 +16,6 @@ public class ModBlocks
 	public static final TntntBlock tntnt = (TntntBlock)new TntntBlock(Block.Properties.create(Material.TNT).sound(SoundType.PLANT).hardnessAndResistance(0, 0)).setRegistryName(Main.MODID,"tntnt");
 	public static final CombinerBlock combiner=(CombinerBlock) new CombinerBlock().setRegistryName(Main.MODID, "combiner");
 	public static final SoulsandntBlock soulsandnt = (SoulsandntBlock)new SoulsandntBlock(Block.Properties.create(Material.SAND, MaterialColor.BROWN).tickRandomly().hardnessAndResistance(0.5F).sound(SoundType.SAND)).setRegistryName(Main.MODID,"soulsandnt");
+	public static final BeaconntBlock beaconnt =  (BeaconntBlock)new BeaconntBlock(Block.Properties.create(Material.GLASS, MaterialColor.DIAMOND).hardnessAndResistance(3.0F).lightValue(15)).setRegistryName(Main.MODID,"beaconnt");
 	public static final BubbleColumnCustom BUBBLE_COLUMN = (BubbleColumnCustom)new BubbleColumnCustom(Block.Properties.create(Material.BUBBLE_COLUMN).doesNotBlockMovement().noDrops()).setRegistryName(Main.MODID,"bubblecolumn");
 }

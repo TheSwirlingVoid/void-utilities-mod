@@ -1,6 +1,7 @@
 package org.theswirlingvoid.VoidUtilities;
 
 import org.theswirlingvoid.VoidUtilities.Main.RegistryEvents;
+import org.theswirlingvoid.VoidUtilities.screen.BeaconntScreen;
 import org.theswirlingvoid.VoidUtilities.screen.CombinerBlockScreen;
 import org.theswirlingvoid.VoidUtilities.screen.FurnacentScreen;
 
@@ -15,6 +16,7 @@ public class ClientProxy implements IProxy
 	public void init() {
 		ScreenManager.registerFactory(RegistryEvents.furnacentCont, FurnacentScreen::new);
 		ScreenManager.registerFactory(RegistryEvents.combinerCont, CombinerBlockScreen::new);
+		ScreenManager.registerFactory(RegistryEvents.beaconntCont, BeaconntScreen::new);
 	}
 	@Override
 	public World getClientWorld() {

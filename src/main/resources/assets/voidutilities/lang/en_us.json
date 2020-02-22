@@ -7,5 +7,9 @@
 	"block.voidutilities.combiner": "Combiner",
 	"container.combiner": "Combiner",
     "block.voidutilities.bubblecolumn": "Bubble Column",
-    "block.voidutilities.soulsandnt": "Soul Sandn't"
+    "block.voidutilities.soulsandnt": "Soul Sandn't",
+    "block.voidutilities.beaconnt": "Beaconn't",
+    "effect.voidutilities.light": "Light",
+    "effect.voidutilities.fragile": "Fragile",
+    "effect.voidutilities.myopia": "Myopia"
 }
